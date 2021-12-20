@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name: Headless Block Parser
+ * Plugin Name: BYOB Headless Block Parser
  * Description: Custom Gutenberg block parser that replaces internal link URL domains with that of the decoupled frontend JS app.
  * Version:     0.1.0
- * Author:      Kellen Mace
+ * Author:      Kellen Mace, Amor Kumar
  * Author URI:  https://kellenmace.com/
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
