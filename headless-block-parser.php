@@ -13,47 +13,45 @@
 /**
  * Custom block parser for headless WordPress sites.
  */
-class Headless_Block_Parser extends WP_Block_Parser
-{
-    /**
-     * Parses a document and returns a list of block structures
-     *
-     * When encountering an invalid parse will return a best-effort
-     * parse. In contrast to the specification parser this does not
-     * return an error on invalid inputs.
-     *
-     * @param string $document Input document being parsed.
-     *
-     * @return WP_Block_Parser_Block[]
-     */
-    public function parse($document): array
-    {
-        $is_graphql_request = function_exists('is_graphql_request') && is_graphql_request();
-        $is_rest_request    = defined('REST_REQUEST');
+class Headless_Block_Parser extends WP_Block_Parser {
 
-        // Don't modify the document if this is not a GraphQL or REST API request.
-        if (!$is_graphql_request && !$is_rest_request) {
-            return parent::parse($document);
-        }
+	/**
+	 * Parses a document and returns a list of block structures
+	 *
+	 * When encountering an invalid parse will return a best-effort
+	 * parse. In contrast to the specification parser this does not
+	 * return an error on invalid inputs.
+	 *
+	 * @param string $document Input document being parsed.
+	 *
+	 * @return WP_Block_Parser_Block[]
+	 */
+	public function parse( $document ): array {
+		$is_graphql_request = function_exists( 'is_graphql_request' ) && is_graphql_request();
+		$is_rest_request    = defined( 'REST_REQUEST' );
 
-        $document_with_replacements = $this->replace_internal_link_url_domains($document);
+		// Don't modify the document if this is not a GraphQL or REST API request.
+		if ( ! $is_graphql_request && ! $is_rest_request ) {
+			return parent::parse( $document );
+		}
 
-        return parent::parse($document_with_replacements);
-    }
+		$document_with_replacements = $this->replace_internal_link_url_domains( $document );
 
-    /**
-     * Rewrite internal link URLs to point to the decoupled frontend app.
-     *
-     * @param string $document Input document being parsed.
-     *
-     * @return string $document Input document with internal link URL domains replaced.
-     */
-    private function replace_internal_link_url_domains(string $document): string
-    {
-        $site_url         = site_url();
+		return parent::parse( $document_with_replacements );
+	}
 
-        return str_replace('href="' . $site_url, 'data-internal-link="true" href="' . FRONTEND_APP_URL, $document);
-    }
+	/**
+	 * Rewrite internal link URLs to point to the decoupled frontend app.
+	 *
+	 * @param string $document Input document being parsed.
+	 *
+	 * @return string $document Input document with internal link URL domains replaced.
+	 */
+	private function replace_internal_link_url_domains( string $document ): string {
+		$site_url = site_url();
+
+		return str_replace( 'href="' . $site_url, 'data-internal-link="true" href="' . FRONTEND_APP_URL, $document );
+	}
 }
 
 /**
@@ -61,4 +59,4 @@ class Headless_Block_Parser extends WP_Block_Parser
  *
  * @return string Name of block parser class.
  */
-add_filter('block_parser_class', fn (): string => 'Headless_Block_Parser');
+add_filter( 'block_parser_class', fn (): string => 'Headless_Block_Parser' );
