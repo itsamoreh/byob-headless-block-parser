@@ -1,0 +1,9 @@
+{
+  "name": "itsamoreh/byob-headless-block-parser",
+  "description": "BYOB Headless Block Parser Plugin",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "composer/installers": "~1.0"
+  }
+}
