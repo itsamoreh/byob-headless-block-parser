@@ -3,7 +3,7 @@
 /**
  * Plugin Name: BYOB Headless Block Parser
  * Description: Custom Gutenberg block parser that replaces internal link URL domains with that of the decoupled frontend JS app.
- * Version:     0.1.0
+ * Version:     0.1.2
  * Author:      Kellen Mace, Amor Kumar
  * Author URI:  https://kellenmace.com/
  * License:     GPLv2 or later
@@ -48,9 +48,13 @@ class Headless_Block_Parser extends WP_Block_Parser {
 	 * @return string $document Input document with internal link URL domains replaced.
 	 */
 	private function replace_internal_link_url_domains( string $document ): string {
-		$site_url = site_url();
+		$site_url         = site_url();
+		$slashed_site_url = addcslashes( site_url(), '/' );
 
-		return str_replace( 'href="' . $site_url, 'data-internal-link="true" href="' . FRONTEND_APP_URL, $document );
+		$document_with_replacements = str_replace( 'href="' . $site_url, 'data-internal-link="true" href="' . FRONTEND_APP_URL, $document );
+		$document_with_replacements = str_replace( '"url": "' . $slashed_site_url, '"url": "' . FRONTEND_APP_URL, $document_with_replacements );
+
+		return $document_with_replacements;
 	}
 }
 
